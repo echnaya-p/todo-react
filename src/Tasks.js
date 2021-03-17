@@ -1,8 +1,10 @@
 import React  from 'react';
 import {taskState} from "./constants/constants";
+import * as PropTypes from "prop-types";
 
-export default function Tasks(props) {
+function Tasks(props) {
     const { ids, filteredIds, tasks, onUpdateIds, onUpdateTasks, onUpdateFilteredIds } = props;
+
     const handleChangeState = (id) => () => {
         onUpdateTasks({
             ...tasks,
@@ -12,6 +14,7 @@ export default function Tasks(props) {
             }
         });
     };
+
     const handleDelete = (id) => () => {
         onUpdateIds(ids.filter((tasksId) => tasksId !== id));
         onUpdateFilteredIds(filteredIds.filter((tasksId) => tasksId !== id));
@@ -37,3 +40,14 @@ export default function Tasks(props) {
         </ul>
     );
 }
+
+Tasks.propTypes = {
+    ids: PropTypes.array,
+    tasks: PropTypes.object,
+    filteredIds: PropTypes.array,
+    onUpdateIds: PropTypes.func,
+    onUpdateTasks: PropTypes.func,
+    onUpdateFilteredIds: PropTypes.func,
+};
+
+export default Tasks;

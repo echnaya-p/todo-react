@@ -1,7 +1,8 @@
 import React from 'react';
 import {taskState} from "./constants/constants";
+import * as PropTypes from 'prop-types';
 
-export default function Filter(props) {
+function Filter(props) {
     const { ids, tasks, onUpdateFilteredIds, select, onUpdateSelect } = props;
 
     const handleFilterTask = (event) => {
@@ -21,3 +22,13 @@ export default function Filter(props) {
         </select>
     );
 }
+
+Filter.propTypes = {
+    ids: PropTypes.array,
+    tasks: PropTypes.object,
+    select: PropTypes.string,
+    onUpdateFilteredIds: PropTypes.func,
+    onUpdateSelect: PropTypes.func,
+};
+
+export default Filter;
