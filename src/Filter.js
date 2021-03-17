@@ -7,6 +7,7 @@ function Filter(props) {
 
     const handleFilterTask = (event) => {
         onUpdateSelect(event.target.value);
+
         if (event.target.value !== 'all') {
             onUpdateFilteredIds(ids.filter((id) => tasks[id].state === event.target.value));
         } else {

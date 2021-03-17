@@ -6,27 +6,26 @@ import * as PropTypes from 'prop-types';
 function Form(props) {
     const { text, tasks, ids, onUpdateIds, onUpdateTasks, onUpdateText, select, filteredIds, onUpdateFilteredIds } = props;
 
-    const handleChange = (e) => {
+    const handleChangeText = (e) => {
         onUpdateText(e.target.value);
     };
 
-    const handleAdd = () => {
+    const handleAddTask = () => {
         const id = generateUniqueID();
-
-        onUpdateIds([ id, ...ids ]);
 
         if (select !== taskState.FINISHED) {
             onUpdateFilteredIds([id, ...filteredIds]);
         }
 
+        onUpdateIds([ id, ...ids ]);
         onUpdateTasks({ [id]: { id, text, state: taskState.ACTIVE }, ...tasks });
         onUpdateText('');
     };
 
     return (
         <div>
-            <input type="text" onChange={handleChange} value={text}/>
-            <button onClick={handleAdd}>Add</button>
+            <input type="text" onChange={handleChangeText} value={text}/>
+            <button onClick={handleAddTask}>Add</button>
         </div>
     );
 }

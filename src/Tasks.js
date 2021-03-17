@@ -15,10 +15,11 @@ function Tasks(props) {
         });
     };
 
-    const handleDelete = (id) => () => {
+    const handleDeleteTask = (id) => () => {
+        const filteredTasks = { ...tasks };
+
         onUpdateIds(ids.filter((tasksId) => tasksId !== id));
         onUpdateFilteredIds(filteredIds.filter((tasksId) => tasksId !== id));
-        const filteredTasks = { ...tasks };
         delete filteredTasks[id];
         onUpdateTasks(filteredTasks);
     };
@@ -28,7 +29,7 @@ function Tasks(props) {
             <li key={`${id}${tasks[id].text}`}>
                 <div role="button" onClick={handleChangeState(id)}>
                     {tasks[id].state === taskState.FINISHED ? <s>{tasks[id].text}</s> : tasks[id].text}
-                    <button onClick={handleDelete(id)}>x</button>
+                    <button onClick={handleDeleteTask(id)}>x</button>
                 </div>
             </li>
         ))
