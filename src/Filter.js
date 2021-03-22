@@ -3,7 +3,7 @@ import {taskState} from "./constants/constants";
 import * as PropTypes from 'prop-types';
 
 function Filter(props) {
-    const { ids, tasks, onUpdateFilteredIds, select, onUpdateSelect } = props;
+    const { ids, tasks, order, onUpdateFilteredIds, select, onUpdateSelect, onUpdateOrder } = props;
 
     const handleFilterTask = (event) => {
         onUpdateSelect(event.target.value);
@@ -15,12 +15,22 @@ function Filter(props) {
         }
     };
 
+    const handleFilterOrder = (event) => {
+        onUpdateOrder(event.target.value);
+    };
+
     return (
-        <select value={select} onChange={handleFilterTask}>
-            <option value="all">All tasks</option>
-            <option value={taskState.ACTIVE}>Active tasks</option>
-            <option value={taskState.FINISHED}>Fished tasks</option>
-        </select>
+        <div>
+            <select value={select} onChange={handleFilterTask}>
+                <option value="all">All tasks</option>
+                <option value={taskState.ACTIVE}>Active tasks</option>
+                <option value={taskState.FINISHED}>Fished tasks</option>
+            </select>
+            <select value={order} onChange={handleFilterOrder}>
+                <option value="new">New first</option>
+                <option value="old">Old first</option>
+            </select>
+        </div>
     );
 }
 

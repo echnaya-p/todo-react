@@ -9,12 +9,14 @@ export default function ToDo() {
     const [ tasks, setTasks ] = useState({});
     const [ filteredIds, setFilteredIds ] = useState(ids);
     const [ select, setSelect ] = useState('all');
+    const [ order, setOrder ] = useState('new');
 
     const handleUpdateText = (text) => setText(text);
     const handleUpdateIds = (ids) => setIds(ids);
     const handleUpdateTasks = (tasks) => setTasks(tasks);
     const handleUpdateFilteredIds = (ids) => setFilteredIds(ids);
     const handleUpdateSelect = (select) => setSelect(select);
+    const handleUpdateOrder = (order) => setOrder(order);
 
     return (
         <div>
@@ -24,6 +26,7 @@ export default function ToDo() {
                 tasks={tasks}
                 select={select}
                 filteredIds={filteredIds}
+                order={order}
                 onUpdateText={handleUpdateText}
                 onUpdateIds={handleUpdateIds}
                 onUpdateTasks={handleUpdateTasks}
@@ -33,8 +36,10 @@ export default function ToDo() {
                 ids={ids}
                 tasks={tasks}
                 select={select}
+                order={order}
                 onUpdateFilteredIds={handleUpdateFilteredIds}
                 onUpdateSelect={handleUpdateSelect}
+                onUpdateOrder={handleUpdateOrder}
             />
             {ids.length > 0 &&
                 <Tasks
@@ -42,6 +47,7 @@ export default function ToDo() {
                     filteredIds={filteredIds}
                     onUpdateIds={handleUpdateIds}
                     tasks={tasks}
+                    order={order}
                     onUpdateTasks={handleUpdateTasks}
                     onUpdateFilteredIds={handleUpdateFilteredIds}
                 />

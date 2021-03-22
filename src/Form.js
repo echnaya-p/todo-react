@@ -4,7 +4,7 @@ import { taskState } from "./constants/constants";
 import * as PropTypes from 'prop-types';
 
 function Form(props) {
-    const { text, tasks, ids, onUpdateIds, onUpdateTasks, onUpdateText, select, filteredIds, onUpdateFilteredIds } = props;
+    const { text, tasks, ids, order, onUpdateIds, onUpdateTasks, onUpdateText, select, filteredIds, onUpdateFilteredIds } = props;
 
     const handleChangeText = (e) => {
         onUpdateText(e.target.value);
@@ -17,8 +17,14 @@ function Form(props) {
             onUpdateFilteredIds([id, ...filteredIds]);
         }
 
-        onUpdateIds([ id, ...ids ]);
-        onUpdateTasks({ [id]: { id, text, state: taskState.ACTIVE }, ...tasks });
+        if (order === "new") {
+            onUpdateIds([ id, ...ids ]);
+            onUpdateTasks({ [id]: { id, text, state: taskState.ACTIVE, date: new Date() }, ...tasks });
+        } else {
+            onUpdateIds([ ...ids, id ]);
+            onUpdateTasks({ ...tasks, [id]: { id, text, state: taskState.ACTIVE, date: new Date() } });
+        }
+
         onUpdateText('');
     };
 

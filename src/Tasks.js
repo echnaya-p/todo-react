@@ -3,7 +3,7 @@ import {taskState} from "./constants/constants";
 import * as PropTypes from "prop-types";
 
 function Tasks(props) {
-    const { ids, filteredIds, tasks, onUpdateIds, onUpdateTasks, onUpdateFilteredIds } = props;
+    const { ids, filteredIds, tasks, order, onUpdateIds, onUpdateTasks, onUpdateFilteredIds } = props;
 
     const handleChangeState = (id) => () => {
         onUpdateTasks({
@@ -24,11 +24,22 @@ function Tasks(props) {
         onUpdateTasks(filteredTasks);
     };
 
+    const compare = (a, b) => {
+        if (order === "new" ) {
+        return b - a;
+        }
+
+        return a - b;
+    };
+
     const renderList = () => (
-        filteredIds.map((id) => (
+        filteredIds.sort(compare).map((id) => (
             <li key={`${id}${tasks[id].text}`}>
                 <div role="button" onClick={handleChangeState(id)}>
-                    {tasks[id].state === taskState.FINISHED ? <s>{tasks[id].text}</s> : tasks[id].text}
+                    <span>{tasks[id].date.toLocaleString()}</span>
+                    <span>
+                        {tasks[id].state === taskState.FINISHED ? <s>{tasks[id].text}</s> : tasks[id].text}
+                    </span>
                     <button onClick={handleDeleteTask(id)}>x</button>
                 </div>
             </li>
