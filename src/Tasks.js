@@ -1,5 +1,5 @@
 import React  from 'react';
-import {taskState} from "./constants/constants";
+import {filterByOrder, taskState} from "./constants/constants";
 import * as PropTypes from "prop-types";
 
 function Tasks(props) {
@@ -24,26 +24,20 @@ function Tasks(props) {
         onUpdateTasks(filteredTasks);
     };
 
-    const compare = (a, b) => {
-        if (order === "new" ) {
-        return b - a;
-        }
-
-        return a - b;
-    };
-
     const renderList = () => (
-        filteredIds.sort(compare).map((id) => (
-            <li key={`${id}${tasks[id].text}`}>
-                <div role="button" onClick={handleChangeState(id)}>
-                    <span>{tasks[id].date.toLocaleString()}</span>
-                    <span>
-                        {tasks[id].state === taskState.FINISHED ? <s>{tasks[id].text}</s> : tasks[id].text}
-                    </span>
-                    <button onClick={handleDeleteTask(id)}>x</button>
-                </div>
-            </li>
-        ))
+        filteredIds
+            .sort((a,b) => order === filterByOrder.NEW ? b - a : a - b)
+            .map((id) => (
+                <li key={`${id}${tasks[id].text}`}>
+                    <div role="button" onClick={handleChangeState(id)}>
+                        <span>{tasks[id].date.toLocaleString()}</span>
+                        <span>
+                            {tasks[id].state === taskState.FINISHED ? <s>{tasks[id].text}</s> : tasks[id].text}
+                        </span>
+                        <button onClick={handleDeleteTask(id)}>x</button>
+                    </div>
+                </li>
+            ))
     );
 
     return (

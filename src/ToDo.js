@@ -2,14 +2,15 @@ import React, {useState} from 'react';
 import Form from './Form.js';
 import Tasks from './Tasks.js';
 import Filter from "./Filter";
+import {filterByOrder, filterByState} from "./constants/constants";
 
 export default function ToDo() {
     const [ text, setText ] = useState('');
     const [ ids, setIds ] = useState([]);
     const [ tasks, setTasks ] = useState({});
     const [ filteredIds, setFilteredIds ] = useState(ids);
-    const [ select, setSelect ] = useState('all');
-    const [ order, setOrder ] = useState('new');
+    const [ select, setSelect ] = useState(filterByState.ALL);
+    const [ order, setOrder ] = useState(filterByOrder.NEW);
 
     const handleUpdateText = (text) => setText(text);
     const handleUpdateIds = (ids) => setIds(ids);

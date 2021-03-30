@@ -1,6 +1,6 @@
 import React from 'react';
 import { generateUniqueID } from './utils/utils';
-import { taskState } from "./constants/constants";
+import { taskState, filterByOrder } from "./constants/constants";
 import * as PropTypes from 'prop-types';
 
 function Form(props) {
@@ -17,7 +17,7 @@ function Form(props) {
             onUpdateFilteredIds([id, ...filteredIds]);
         }
 
-        if (order === "new") {
+        if (order === filterByOrder.NEW) {
             onUpdateIds([ id, ...ids ]);
             onUpdateTasks({ [id]: { id, text, state: taskState.ACTIVE, date: new Date() }, ...tasks });
         } else {
