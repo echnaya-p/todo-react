@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import Form from './Form.js';
 import Tasks from './Tasks.js';
-import Filter from "./Filter";
+import Filter from "./Filter.js";
 import {filterByOrder, filterByState} from "./constants/constants";
 
 export default function ToDo() {
@@ -19,6 +19,25 @@ export default function ToDo() {
     const handleUpdateSelect = (select) => setSelect(select);
     const handleUpdateOrder = (order) => setOrder(order);
 
+    const handleChangeState = (id) => () => {
+        setTasks({
+            ...tasks,
+            [id]: {
+                ...tasks[id],
+                state: tasks[id].state === taskState.ACTIVE ? taskState.FINISHED : taskState.ACTIVE
+            }
+        });
+    };
+
+    const handleDeleteTask = (id) => () => {
+        const filteredTasks = { ...tasks };
+
+        setIds(ids.filter((tasksId) => tasksId !== id));
+        setFilteredIds(filteredIds.filter((tasksId) => tasksId !== id));
+        delete filteredTasks[id];
+        setTasks(filteredTasks);
+    };
+
     return (
         <div>
             <Form
@@ -31,6 +50,8 @@ export default function ToDo() {
                 onUpdateText={handleUpdateText}
                 onUpdateIds={handleUpdateIds}
                 onUpdateTasks={handleUpdateTasks}
+                onChangeState={handleChangeState}
+                onDeleteTask={handleDeleteTask}
                 onUpdateFilteredIds={handleUpdateFilteredIds}
             />
             <Filter
@@ -44,13 +65,11 @@ export default function ToDo() {
             />
             {ids.length > 0 &&
                 <Tasks
-                    ids={ids}
                     filteredIds={filteredIds}
-                    onUpdateIds={handleUpdateIds}
                     tasks={tasks}
                     order={order}
-                    onUpdateTasks={handleUpdateTasks}
-                    onUpdateFilteredIds={handleUpdateFilteredIds}
+                    onChangeState={handleChangeState}
+                    onDeleteTask={handleDeleteTask}
                 />
             }
         </div>

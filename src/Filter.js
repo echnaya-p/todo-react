@@ -1,6 +1,7 @@
 import React from 'react';
 import {filterByOrder, filterByState} from "./constants/constants";
 import * as PropTypes from 'prop-types';
+import { Select, MenuItem } from "@material-ui/core";
 
 function Filter(props) {
     const { ids, tasks, order, onUpdateFilteredIds, select, onUpdateSelect, onUpdateOrder } = props;
@@ -21,15 +22,15 @@ function Filter(props) {
 
     return (
         <div>
-            <select value={select} onChange={handleFilterTaskByState}>
-                <option value={filterByState.ALL}>All tasks</option>
-                <option value={filterByState.ACTIVE}>Active tasks</option>
-                <option value={filterByState.FINISHED}>Fished tasks</option>
-            </select>
-            <select value={order} onChange={handleFilterTaskByDate}>
-                <option value={filterByOrder.NEW}>New first</option>
-                <option value={filterByOrder.OLD}>Old first</option>
-            </select>
+            <Select value={select} onChange={handleFilterTaskByState}>
+                <MenuItem value={filterByState.ALL}>All tasks</MenuItem>
+                <MenuItem value={filterByState.ACTIVE}>Active tasks</MenuItem>
+                <MenuItem value={filterByState.FINISHED}>Fished tasks</MenuItem>
+            </Select>
+            <Select value={order} onChange={handleFilterTaskByDate}>
+                <MenuItem value={filterByOrder.NEW}>New first</MenuItem>
+                <MenuItem value={filterByOrder.OLD}>Old first</MenuItem>
+            </Select>
         </div>
     );
 }

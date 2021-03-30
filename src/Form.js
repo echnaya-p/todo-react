@@ -2,6 +2,7 @@ import React from 'react';
 import { generateUniqueID } from './utils/utils';
 import { taskState, filterByOrder } from "./constants/constants";
 import * as PropTypes from 'prop-types';
+import { Button, TextField } from "@material-ui/core";
 
 function Form(props) {
     const { text, tasks, ids, order, onUpdateIds, onUpdateTasks, onUpdateText, select, filteredIds, onUpdateFilteredIds } = props;
@@ -30,8 +31,8 @@ function Form(props) {
 
     return (
         <div>
-            <input type="text" onChange={handleChangeText} value={text}/>
-            <button onClick={handleAddTask}>Add</button>
+            <TextField id="outlined-basic" variant="outlined" type="text" size="small" onChange={handleChangeText} value={text}/>
+            <Button onClick={handleAddTask} variant="contained" color="primary">Add</Button>
         </div>
     );
 }
