@@ -3,7 +3,7 @@ import {taskState} from "../constants/constants";
 import * as PropTypes from "prop-types";
 import { ListItem, Paper, Grid, Typography, IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import classNames from 'classnames';
 
 const useStyles = makeStyles({
