@@ -2,10 +2,21 @@ import React from 'react';
 import { generateUniqueID } from './utils/utils';
 import { taskState, filterByOrder } from "./constants/constants";
 import * as PropTypes from 'prop-types';
-import { Button, TextField } from "@material-ui/core";
+import { Button, TextField, Grid } from "@material-ui/core";
 
 function Form(props) {
-    const { text, tasks, ids, order, onUpdateIds, onUpdateTasks, onUpdateText, select, filteredIds, onUpdateFilteredIds } = props;
+    const {
+        text,
+        tasks,
+        ids,
+        order,
+        select,
+        filteredIds,
+        onUpdateIds,
+        onUpdateTasks,
+        onUpdateText,
+        onUpdateFilteredIds
+    } = props;
 
     const handleChangeText = (e) => {
         onUpdateText(e.target.value);
@@ -30,10 +41,21 @@ function Form(props) {
     };
 
     return (
-        <div>
-            <TextField id="outlined-basic" variant="outlined" type="text" size="small" onChange={handleChangeText} value={text}/>
-            <Button onClick={handleAddTask} variant="contained" color="primary">Add</Button>
-        </div>
+        <Grid container spacing={2}>
+            <Grid item>
+                <TextField
+                    id="outlined-basic"
+                    variant="outlined"
+                    type="text"
+                    size="small"
+                    onChange={handleChangeText}
+                    value={text}
+                />
+            </Grid>
+            <Grid item>
+                <Button onClick={handleAddTask} variant="contained" color="primary">Add</Button>
+            </Grid>
+        </Grid>
     );
 }
 

@@ -4,10 +4,12 @@ import * as PropTypes from "prop-types";
 import { ListItem, Paper, Grid, Typography, IconButton } from "@material-ui/core";
 import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core";
+import classNames from 'classnames';
 
 const useStyles = makeStyles(() => ({
     colorGreen: {
         backgroundColor: '#C8F4C2',
+
     },
     colorWhite: {
         backgroundColor: '#FFFFFF',
@@ -16,6 +18,13 @@ const useStyles = makeStyles(() => ({
         margin: "5px",
         width: "40vw",
     },
+    item: {
+        cursor: 'pointer',
+        "&:hover": {
+            backgroundColor: '#AEF3A5',
+        },
+    },
+
 }));
 
 function Item(props) {
@@ -27,11 +36,24 @@ function Item(props) {
             <Paper
                 role="button"
                 onClick={onChangeState(task.id)}
-                className={task.state === taskState.FINISHED ? classes.colorGreen : classes.colorWhite}
+                className={classNames({
+                    [classes.item]: true,
+                    [classes.colorGreen]: task.state === taskState.FINISHED,
+                    [classes.colorWhite]: task.state === taskState.ACTIVE,
+                })}
             >
-                <Grid container wrap="nowrap" spacing={1} className={classes.grid} justify="space-between" alignItems="center">
-                    <Grid item><Typography variant="subtitle1" gutterBottom>{number}.</Typography></Grid>
+                <Grid container direction="row" wrap="nowrap" spacing={2} className={classes.grid} justify="space-between" alignItems="center">
                     <Grid item>
+                        <Typography variant="subtitle1" gutterBottom>
+                            {number}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subtitle1" gutterBottom>
+                            {task.date.toLocaleString()}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={7}>
                         <Typography variant="body1" gutterBottom>
                             {task.text}
                         </Typography>
