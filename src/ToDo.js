@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import Form from './Form.js';
 import Tasks from './Tasks.js';
-import Filter from "./Filter";
-import {filterByOrder, filterByState} from "./constants/constants";
+import Filter from "./Filter.js";
+import {filterByOrder, filterByState, taskState} from "./constants/constants";
+import { Grid } from "@material-ui/core";
 
 export default function ToDo() {
     const [ text, setText ] = useState('');
@@ -19,40 +20,63 @@ export default function ToDo() {
     const handleUpdateSelect = (select) => setSelect(select);
     const handleUpdateOrder = (order) => setOrder(order);
 
+    const handleChangeState = (id) => () => {
+        setTasks({
+            ...tasks,
+            [id]: {
+                ...tasks[id],
+                state: tasks[id].state === taskState.ACTIVE ? taskState.FINISHED : taskState.ACTIVE
+            }
+        });
+    };
+
+    const handleDeleteTask = (id) => () => {
+        const filteredTasks = { ...tasks };
+
+        setIds(ids.filter((tasksId) => tasksId !== id));
+        setFilteredIds(filteredIds.filter((tasksId) => tasksId !== id));
+        delete filteredTasks[id];
+        setTasks(filteredTasks);
+    };
+
     return (
-        <div>
-            <Form
-                text={text}
-                ids={ids}
-                tasks={tasks}
-                select={select}
-                filteredIds={filteredIds}
-                order={order}
-                onUpdateText={handleUpdateText}
-                onUpdateIds={handleUpdateIds}
-                onUpdateTasks={handleUpdateTasks}
-                onUpdateFilteredIds={handleUpdateFilteredIds}
-            />
-            <Filter
-                ids={ids}
-                tasks={tasks}
-                select={select}
-                order={order}
-                onUpdateFilteredIds={handleUpdateFilteredIds}
-                onUpdateSelect={handleUpdateSelect}
-                onUpdateOrder={handleUpdateOrder}
-            />
-            {ids.length > 0 &&
-                <Tasks
+        <Grid container spacing={2} direction="column" justify="center" alignItems="center">
+            <Grid item>
+                <Form
+                    text={text}
                     ids={ids}
-                    filteredIds={filteredIds}
-                    onUpdateIds={handleUpdateIds}
                     tasks={tasks}
+                    select={select}
+                    filteredIds={filteredIds}
                     order={order}
+                    onUpdateText={handleUpdateText}
+                    onUpdateIds={handleUpdateIds}
                     onUpdateTasks={handleUpdateTasks}
                     onUpdateFilteredIds={handleUpdateFilteredIds}
                 />
+            </Grid>
+            <Grid item>
+                <Filter
+                    ids={ids}
+                    tasks={tasks}
+                    select={select}
+                    order={order}
+                    onUpdateFilteredIds={handleUpdateFilteredIds}
+                    onUpdateSelect={handleUpdateSelect}
+                    onUpdateOrder={handleUpdateOrder}
+                />
+            </Grid>
+            {ids.length > 0 &&
+                <Grid item>
+                    <Tasks
+                        filteredIds={filteredIds}
+                        tasks={tasks}
+                        order={order}
+                        onChangeState={handleChangeState}
+                        onDeleteTask={handleDeleteTask}
+                    />
+                </Grid>
             }
-        </div>
+        </Grid>
     );
 }

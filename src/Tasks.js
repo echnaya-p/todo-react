@@ -1,59 +1,53 @@
 import React  from 'react';
-import {filterByOrder, taskState} from "./constants/constants";
+import {filterByOrder} from "./constants/constants";
 import * as PropTypes from "prop-types";
+import { List, Grid } from "@material-ui/core";
+import Item from './components/Item.js';
+import { makeStyles } from "@material-ui/core/styles";
+
+const useStyles = makeStyles({
+    root: {
+      width: '100%',
+      maxWidth: '40vw',
+      margin: '0 auto',
+    },
+});
 
 function Tasks(props) {
-    const { ids, filteredIds, tasks, order, onUpdateIds, onUpdateTasks, onUpdateFilteredIds } = props;
-
-    const handleChangeState = (id) => () => {
-        onUpdateTasks({
-            ...tasks,
-            [id]: {
-                ...tasks[id],
-                state: tasks[id].state === taskState.ACTIVE ? taskState.FINISHED : taskState.ACTIVE
-            }
-        });
-    };
-
-    const handleDeleteTask = (id) => () => {
-        const filteredTasks = { ...tasks };
-
-        onUpdateIds(ids.filter((tasksId) => tasksId !== id));
-        onUpdateFilteredIds(filteredIds.filter((tasksId) => tasksId !== id));
-        delete filteredTasks[id];
-        onUpdateTasks(filteredTasks);
-    };
+    const { filteredIds, tasks, order, onChangeState, onDeleteTask  } = props;
+    const classes = useStyles();
 
     const renderList = () => (
         filteredIds
             .sort((a,b) => order === filterByOrder.NEW ? b - a : a - b)
-            .map((id) => (
-                <li key={`${id}${tasks[id].text}`}>
-                    <div role="button" onClick={handleChangeState(id)}>
-                        <span>{tasks[id].date.toLocaleString()}</span>
-                        <span>
-                            {tasks[id].state === taskState.FINISHED ? <s>{tasks[id].text}</s> : tasks[id].text}
-                        </span>
-                        <button onClick={handleDeleteTask(id)}>x</button>
-                    </div>
-                </li>
+            .map((id, index) => (
+                <Item
+                    task={tasks[id]}
+                    onChangeState={onChangeState}
+                    onDeleteTask={onDeleteTask}
+                    key={`${id}${tasks[id].text}`}
+                    number={index + 1}
+                />
             ))
     );
 
     return (
-        <ul>
-            {renderList()}
-        </ul>
+        <Grid container className={classes.root}>
+            <Grid item>
+                <List>
+                    {renderList()}
+                </List>
+            </Grid>
+        </Grid>
     );
 }
 
 Tasks.propTypes = {
-    ids: PropTypes.array,
     tasks: PropTypes.object,
+    order: PropTypes.string,
     filteredIds: PropTypes.array,
-    onUpdateIds: PropTypes.func,
-    onUpdateTasks: PropTypes.func,
-    onUpdateFilteredIds: PropTypes.func,
+    onChangeState: PropTypes.func,
+    onDeleteTask: PropTypes.func,
 };
 
 export default Tasks;
