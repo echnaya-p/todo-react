@@ -6,7 +6,7 @@ import CloseIcon from "@material-ui/icons/Close";
 import { makeStyles } from "@material-ui/core";
 import classNames from 'classnames';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
     colorGreen: {
         backgroundColor: '#C8F4C2',
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles(() => ({
         },
     },
 
-}));
+});
 
 function Item(props) {
     const { task, number, onChangeState, onDeleteTask } = props;

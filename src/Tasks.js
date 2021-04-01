@@ -3,15 +3,15 @@ import {filterByOrder} from "./constants/constants";
 import * as PropTypes from "prop-types";
 import { List, Grid } from "@material-ui/core";
 import Item from './components/Item.js';
-import { makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles({
     root: {
       width: '100%',
       maxWidth: '40vw',
       margin: '0 auto',
     },
-}));
+});
 
 function Tasks(props) {
     const { filteredIds, tasks, order, onChangeState, onDeleteTask  } = props;
