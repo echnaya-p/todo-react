@@ -10,7 +10,7 @@ import {
 import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 import classNames from 'classnames';
-import { taskState } from '../constants/constants';
+import { taskStatus } from '../constants/constants';
 
 const useStyles = makeStyles({
   colorGreen: {
@@ -31,19 +31,19 @@ const useStyles = makeStyles({
   },
 });
 
-function Item(props) {
-  const { task, number, onChangeState, onDeleteTask } = props;
+function Task(props) {
+  const { task, number, onChangeStatus, onDeleteTask } = props;
   const classes = useStyles();
 
   return (
     <ListItem>
       <Paper
         role="button"
-        onClick={onChangeState(task.id)}
+        onClick={onChangeStatus(task.id)}
         className={classNames({
           [classes.item]: true,
-          [classes.colorGreen]: task.state === taskState.FINISHED,
-          [classes.colorWhite]: task.state === taskState.ACTIVE,
+          [classes.colorGreen]: task.status === taskStatus.FINISHED,
+          [classes.colorWhite]: task.status === taskStatus.ACTIVE,
         })}
       >
         <Grid
@@ -62,7 +62,7 @@ function Item(props) {
           </Grid>
           <Grid item>
             <Typography variant="subtitle1" gutterBottom>
-              {task.date.toLocaleString()}
+              {new Date(task.date).toLocaleString()}
             </Typography>
           </Grid>
           <Grid item xs={7}>
@@ -81,16 +81,16 @@ function Item(props) {
   );
 }
 
-Item.propTypes = {
+Task.propTypes = {
   task: PropTypes.shape({
     id: PropTypes.number.isRequired,
     text: PropTypes.string.isRequired,
-    state: PropTypes.string.isRequired,
-    date: PropTypes.instanceOf(Date).isRequired,
+    status: PropTypes.string.isRequired,
+    date: PropTypes.number.isRequired,
   }).isRequired,
   number: PropTypes.number.isRequired,
-  onChangeState: PropTypes.func.isRequired,
+  onChangeStatus: PropTypes.func.isRequired,
   onDeleteTask: PropTypes.func.isRequired,
 };
 
-export default Item;
+export default Task;

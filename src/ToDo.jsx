@@ -1,46 +1,33 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Grid } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 import Form from './Form';
 import Tasks from './Tasks';
 import Filter from './Filter';
-import { filterByOrder, filterByState, taskState } from './constants/constants';
+import { updateSelect, updateOrder } from './slices/filterSlice';
+import { addTask, deleteTask, changeTaskStatus } from './slices/tasksSlice';
+import { updateText, clearText } from './slices/textSlice';
 
-export default function ToDo() {
-  const [text, setText] = useState('');
-  const [ids, setIds] = useState([]);
-  const [tasks, setTasks] = useState({});
-  const [filteredIds, setFilteredIds] = useState(ids);
-  const [select, setSelect] = useState(filterByState.ALL);
-  const [order, setOrder] = useState(filterByOrder.NEW);
+function ToDo() {
+  const text = useSelector((state) => state.text);
+  const ids = useSelector((state) => state.tasks.ids);
+  const tasks = useSelector((state) => state.tasks.tasks);
+  const select = useSelector((state) => state.filter.select);
+  const order = useSelector((state) => state.filter.order);
+  const dispatch = useDispatch();
 
-  const handleUpdateText = (newText) => setText(newText);
-  const handleUpdateIds = (newIds) => setIds(newIds);
-  const handleUpdateTasks = (newTasks) => setTasks(newTasks);
-  const handleUpdateFilteredIds = (newIds) => setFilteredIds(newIds);
-  const handleUpdateSelect = (newSelect) => setSelect(newSelect);
-  const handleUpdateOrder = (newOrder) => setOrder(newOrder);
-
-  const handleChangeState = (id) => () => {
-    setTasks({
-      ...tasks,
-      [id]: {
-        ...tasks[id],
-        state:
-          tasks[id].state === taskState.ACTIVE
-            ? taskState.FINISHED
-            : taskState.ACTIVE,
-      },
-    });
+  const handleUpdateText = (newText) => dispatch(updateText(newText));
+  const handleClearText = () => dispatch(clearText());
+  const handleAddTask = (newTask) => dispatch(addTask(newTask));
+  const handleDeleteTask = (id) => (e) => {
+    e.stopPropagation();
+    dispatch(deleteTask(id));
   };
-
-  const handleDeleteTask = (id) => () => {
-    const filteredTasks = { ...tasks };
-
-    setIds(ids.filter((tasksId) => tasksId !== id));
-    setFilteredIds(filteredIds.filter((tasksId) => tasksId !== id));
-    delete filteredTasks[id];
-    setTasks(filteredTasks);
+  const handleChangeStatus = (id) => () => {
+    dispatch(changeTaskStatus(id));
   };
+  const handleUpdateSelect = (e) => dispatch(updateSelect(e.target.value));
+  const handleUpdateOrder = (e) => dispatch(updateOrder(e.target.value));
 
   return (
     <Grid
@@ -53,15 +40,9 @@ export default function ToDo() {
       <Grid item>
         <Form
           text={text}
-          ids={ids}
-          tasks={tasks}
-          select={select}
-          filteredIds={filteredIds}
-          order={order}
           onUpdateText={handleUpdateText}
-          onUpdateIds={handleUpdateIds}
-          onUpdateTasks={handleUpdateTasks}
-          onUpdateFilteredIds={handleUpdateFilteredIds}
+          onClearText={handleClearText}
+          onAddTask={handleAddTask}
         />
       </Grid>
       <Grid item>
@@ -70,7 +51,6 @@ export default function ToDo() {
           tasks={tasks}
           select={select}
           order={order}
-          onUpdateFilteredIds={handleUpdateFilteredIds}
           onUpdateSelect={handleUpdateSelect}
           onUpdateOrder={handleUpdateOrder}
         />
@@ -78,10 +58,11 @@ export default function ToDo() {
       {ids.length > 0 && (
         <Grid item>
           <Tasks
-            filteredIds={filteredIds}
+            ids={ids}
+            select={select}
             tasks={tasks}
             order={order}
-            onChangeState={handleChangeState}
+            onChangeStatus={handleChangeStatus}
             onDeleteTask={handleDeleteTask}
           />
         </Grid>
@@ -89,3 +70,5 @@ export default function ToDo() {
     </Grid>
   );
 }
+
+export default ToDo;

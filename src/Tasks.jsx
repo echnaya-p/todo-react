@@ -2,8 +2,8 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import { List, Grid } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import Item from './components/Item';
-import { filterByOrder } from './constants/constants';
+import Task from './components/Task';
+import { filterByOrder, filterByStatus } from './constants/constants';
 
 const useStyles = makeStyles({
   root: {
@@ -14,21 +14,35 @@ const useStyles = makeStyles({
 });
 
 function Tasks(props) {
-  const { filteredIds, tasks, order, onChangeState, onDeleteTask } = props;
+  const { ids, select, tasks, order, onChangeStatus, onDeleteTask } = props;
   const classes = useStyles();
 
-  const renderList = () =>
-    filteredIds
+  const renderList = () => {
+    const copyIds = [...ids];
+
+    return copyIds
+      .filter((id) => {
+        if (select === filterByStatus.ALL) {
+          return true;
+        }
+
+        if (tasks[id].status === select) {
+          return true;
+        }
+
+        return false;
+      })
       .sort((a, b) => (order === filterByOrder.NEW ? b - a : a - b))
       .map((id, index) => (
-        <Item
+        <Task
           task={tasks[id]}
-          onChangeState={onChangeState}
+          onChangeStatus={onChangeStatus}
           onDeleteTask={onDeleteTask}
           key={`${id}${tasks[id].text}`}
           number={index + 1}
         />
       ));
+  };
 
   return (
     <Grid container className={classes.root}>
@@ -41,14 +55,15 @@ function Tasks(props) {
 
 Tasks.propTypes = {
   tasks: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    text: PropTypes.string.isRequired,
-    state: PropTypes.string.isRequired,
-    date: PropTypes.instanceOf(Date).isRequired,
+    id: PropTypes.number,
+    text: PropTypes.string,
+    status: PropTypes.string,
+    date: PropTypes.number,
   }).isRequired,
   order: PropTypes.string.isRequired,
-  filteredIds: PropTypes.arrayOf(PropTypes.number).isRequired,
-  onChangeState: PropTypes.func.isRequired,
+  select: PropTypes.string.isRequired,
+  ids: PropTypes.arrayOf(PropTypes.number).isRequired,
+  onChangeStatus: PropTypes.func.isRequired,
   onDeleteTask: PropTypes.func.isRequired,
 };
 

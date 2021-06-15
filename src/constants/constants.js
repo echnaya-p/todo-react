@@ -1,4 +1,4 @@
-export const taskState = {
+export const taskStatus = {
   ACTIVE: 'active',
   FINISHED: 'finished',
 };
@@ -8,8 +8,8 @@ export const filterByOrder = {
   OLD: 'old',
 };
 
-export const filterByState = {
+export const filterByStatus = {
   ALL: 'all',
-  ACTIVE: taskState.ACTIVE,
-  FINISHED: taskState.FINISHED,
+  ACTIVE: taskStatus.ACTIVE,
+  FINISHED: taskStatus.FINISHED,
 };
