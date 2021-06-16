@@ -1,15 +1,15 @@
 export const taskState = {
-    ACTIVE: 'active',
-    FINISHED: 'finished',
+  ACTIVE: 'active',
+  FINISHED: 'finished',
 };
 
 export const filterByOrder = {
-    NEW: 'new',
-    OLD: 'old',
+  NEW: 'new',
+  OLD: 'old',
 };
 
 export const filterByState = {
-    ALL: 'all',
-    ACTIVE: taskState.ACTIVE,
-    FINISHED: taskState.FINISHED,
+  ALL: 'all',
+  ACTIVE: taskState.ACTIVE,
+  FINISHED: taskState.FINISHED,
 };
